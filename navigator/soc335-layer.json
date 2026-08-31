@@ -1,0 +1,136 @@
+{
+  "name": "SOC335 - CVE-2024-49138 Privilege Escalation",
+  "versions": {
+    "attack": "15",
+    "navigator": "4.9.1",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "Technique mapping for LetsDefend alert SOC335 (CVE-2024-49138 Exploitation Detected, host Victor). See technique-breakdown.md in zaimmzulhazziq/mitre-attack-mapping for the full evidence trail behind each mapping.",
+  "filters": {
+    "platforms": [
+      "Windows"
+    ]
+  },
+  "sorting": 0,
+  "layout": {
+    "layout": "side",
+    "aggregateFunction": "average",
+    "showID": true,
+    "showName": true,
+    "showAggregateScores": false,
+    "countUnscored": false
+  },
+  "hideDisabled": false,
+  "techniques": [
+    {
+      "techniqueID": "T1110.001",
+      "tactic": "credential-access",
+      "color": "#e60d0d",
+      "comment": "14x failed RDP logons (EventID 4625) against admin/guest from 185.107.56.141. Log Management, Authentication logs.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1133",
+      "tactic": "initial-access",
+      "color": "#e60d0d",
+      "comment": "Successful RDP logon as Victor (EventID 4624, Logon Type 10) immediately after the brute-force burst. Judgment call vs T1078 Valid Accounts - see technique-breakdown.md.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1033",
+      "tactic": "discovery",
+      "color": "#f2960c",
+      "comment": "whoami / whoami /priv run to enumerate current user and token privileges. Terminal History.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1059.001",
+      "tactic": "execution",
+      "color": "#f2960c",
+      "comment": "PowerShell used to run Invoke-WebRequest downloading the payload archive. Terminal History.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1105",
+      "tactic": "command-and-control",
+      "color": "#e60d0d",
+      "comment": "Payload archive pulled from an external S3 staging URL. Only visible in Terminal History - absent from Network Action / outbound-IP logs.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1027.013",
+      "tactic": "defense-evasion",
+      "color": "#f2960c",
+      "comment": "Archive extracted with a hardcoded 7-Zip password to prevent content scanning. Terminal History.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1036.005",
+      "tactic": "defense-evasion",
+      "color": "#e60d0d",
+      "comment": "Payload named svohost.exe to mimic svchost.exe. Ran from C:\\temp\\, not the legitimate System32 path.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    },
+    {
+      "techniqueID": "T1068",
+      "tactic": "privilege-escalation",
+      "color": "#8f1919",
+      "comment": "svohost.exe exploited CVE-2024-49138. Device Action: Allowed - endpoint agent did not block a file already flagged malicious by 50/71 VirusTotal vendors.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": false
+    }
+  ],
+  "gradient": {
+    "colors": [
+      "#ffffff",
+      "#ff6666"
+    ],
+    "minValue": 0,
+    "maxValue": 100
+  },
+  "legendItems": [
+    {
+      "label": "Confirmed from direct evidence",
+      "color": "#e60d0d"
+    },
+    {
+      "label": "Endpoint control gap (allowed, not blocked)",
+      "color": "#8f1919"
+    },
+    {
+      "label": "Supporting / reconnaissance step",
+      "color": "#f2960c"
+    }
+  ],
+  "metadata": [],
+  "links": [],
+  "showTacticRowBackground": false,
+  "tacticRowBackground": "#dddddd",
+  "selectTechniquesAcrossTactics": true,
+  "selectSubtechniquesWithParent": false,
+  "selectVisibleTechniques": false
+}
